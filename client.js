@@ -2,6 +2,7 @@
 // client .js
 const net = require('net')
 const EventEmitter = require('events')
+const fs = require('fs')
 
 const HEAD_LENGTH = 4
 
@@ -77,12 +78,18 @@ module.exports = Client
 const executor = async () => {
   const client = new Client({ port: '8080' })
   setTimeout(() => {
-    client.socket.write(Buffer.from('hello from node client'))
+    const str = 'hello from node client'
+    const length = Buffer.alloc(4)
+    console.log(str.length)
+    length.writeUInt32LE(str.length)
+    client.socket.write(length)
+    client.socket.write(Buffer.from(str))
   }, 100)
 
-  setTimeout(() => {
-    client.socket.write(Buffer.from('hello from node client'))
-  }, 200)
+  // setTimeout(() => {
+  //   const data = fs.readFileSync('./pm2-out-45.log')
+  //   client.socket.write(data)
+  // }, 200)
 }
 
 executor()
