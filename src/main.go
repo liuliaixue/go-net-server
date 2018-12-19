@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/binary"
+	// "encoding/binary"
 	"fmt"
 	"net"
 	// "time"
@@ -54,13 +54,30 @@ func handleConnection(conn net.Conn) {
 	fmt.Println(`end`)
 
 }
+func getByteLength(buf []byte) int{
+	var length int
+	for index, value := range buf {
+		p := int(1 << (uint32(index) * 8))
+		length +=   (int(value) * p)
+	}
+	return length
+}
 
 func onBuffer(bufs [][]byte) {
-	fmt.Println("'on buffer'")
+	if len(bufs[0]) == 4 {
+		fmt.Println("laji")
+		
+		lengthByte := bufs[0][0:4]
+		fmt.Println(lengthByte)
+		length := getByteLength(lengthByte)
+		fmt.Println("length:", length)
+	}
+
 	if len(bufs[0]) > 4 {
 
 		lengthByte := bufs[0][0:4]
-		length := binary.LittleEndian.Uint32(lengthByte)
+		fmt.Println(lengthByte)
+		length := getByteLength(lengthByte)
 		fmt.Println("length:", length)
 		if len(bufs[0]) > int(length+4) {
 			data := bufs[0][:length+4]

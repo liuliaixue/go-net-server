@@ -82,13 +82,30 @@ const executor = async () => {
     const length = Buffer.alloc(4)
     console.log(str.length)
     length.writeUInt32LE(str.length)
+    console.log(length)
+    console.log(Buffer.from(str))
     client.socket.write(length)
-    client.socket.write(Buffer.from(str))
+    // client.socket.write(Buffer.from(str))
   }, 100)
 
   // setTimeout(() => {
   //   const data = fs.readFileSync('./pm2-out-45.log')
-  //   client.socket.write(data)
+  //   const length = Buffer.alloc(4)
+  //   length.writeUInt32LE(data.length)
+
+  //   console.log(length)
+  //   client.socket.write(length)
+
+  // }, 200)
+
+
+  // setTimeout(() => {
+  //   const length = Buffer.alloc(4)
+  //   length.writeUInt32LE(1 + (1 * 1 << 8) + (1 * 1 << 16) + (1 * 1 << 24))
+
+  //   console.log(length, 1 + (1 * 1 << 8) + (1 * 1 << 16) + (1 * 1 << 24))
+  //   client.socket.write(length)
+
   // }, 200)
 }
 
